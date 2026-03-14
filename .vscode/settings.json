@@ -5,5 +5,9 @@
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "window.title": "${dirty}Vue Term"
+  "window.title": "${dirty}Vue Term",
+  "chat.tools.terminal.autoApprove": {
+    "npx vue-tsc": true,
+    "npx vite": true
+  }
 }
