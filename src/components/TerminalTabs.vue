@@ -4,13 +4,14 @@
       <button
         v-for="session in sessions"
         :key="session.sessionId"
-        class="flex items-center gap-1.5 px-3 ml-px rounded-t-lg text-tab-text text-[13px] cursor-pointer whitespace-nowrap min-w-0 font-inherit bg-tab-bg hover:bg-tab-hover hover:text-tab-text-hover group no-drag"
+        class="flex items-center gap-1.5 pl-3 pr-1 ml-px rounded-t-lg text-tab-text text-[13px] cursor-pointer whitespace-nowrap min-w-0 font-inherit bg-tab-bg hover:bg-tab-hover hover:text-tab-text-hover group no-drag"
         :class="{ '!bg-panel !text-tab-text-active': session.sessionId === activeSessionId }"
         @click="emit('select', session.sessionId)"
       >
+        <img v-if="session.shell.icon" :src="session.shell.icon" class="shrink-0 w-4 h-4" />
         <span class="overflow-hidden text-ellipsis">{{ session.shell.name }}</span>
         <span
-          class="text-base leading-none opacity-0 transition-opacity duration-100 group-hover:opacity-100 hover:!text-tab-text-active"
+          class="text-lg leading-none rounded opacity-0 transition-all duration-100 px-1 pb-0.5 group-hover:opacity-100 hover:bg-btn-hover hover:!text-tab-text-active"
           :class="{ '!opacity-100': session.sessionId === activeSessionId }"
           @click.stop="emit('close', session.sessionId)"
           >×</span
@@ -26,7 +27,7 @@
       </button>
       <div
         v-show="dropdownOpen"
-        class="absolute top-full left-0 bg-tab-bar border border-dropdown-border rounded py-1 z-50 min-w-[150px]"
+        class="absolute top-full left-0 bg-tab-bar border border-dropdown-border rounded py-1 z-50 min-w-[300px]"
       >
         <button
           v-for="shell in shells"
@@ -34,7 +35,7 @@
           class="block w-full py-1.5 px-3 bg-transparent border-none text-tab-text-hover text-[13px] text-left cursor-pointer font-inherit hover:bg-dropdown-item-hover"
           @click="handleCreate(shell)"
         >
-          {{ shell.name }}
+          <img v-if="shell.icon" :src="shell.icon" class="inline w-4 h-4" /> {{ shell.name }}
         </button>
       </div>
     </div>

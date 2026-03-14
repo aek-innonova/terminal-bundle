@@ -3,11 +3,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { Terminal } from '@xterm/xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import { WebLinksAddon } from '@xterm/addon-web-links'
 import { sendData, resize, onOutput, offOutput, onExit, offExit } from '@/services/socket'
+import { useTheme } from '@/composables/useTheme'
+
+const { currentTheme } = useTheme()
 
 const props = defineProps<{
   sessionId: string
@@ -39,14 +42,10 @@ onMounted(() => {
   terminal = new Terminal({
     cursorBlink: true,
     cursorStyle: 'bar',
+    cursorInactiveStyle: 'none',
     fontSize: 16,
     fontFamily: "'Cascadia Code', 'Fira Code', 'Consolas', monospace",
-    theme: {
-      background: '#1e1e1e',
-      foreground: '#cccccc',
-      cursor: '#ffffff',
-      selectionBackground: '#264f78',
-    },
+    theme: currentTheme.value,
   })
 
   fitAddon = new FitAddon()
@@ -66,6 +65,12 @@ onMounted(() => {
 
   terminal.open(containerRef.value)
   fitAddon.fit()
+})
+
+watch(currentTheme, (theme) => {
+  if (terminal) {
+    terminal.options.theme = theme
+  }
 })
 
 onBeforeUnmount(() => {
